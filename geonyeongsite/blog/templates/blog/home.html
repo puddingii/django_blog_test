@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Document{% endblock %}
+{% load static %}
+{% block content %}
+
+{% for blog in blogs.all %}
+    <div class="card home-card">
+        <div class="card-header" style="font-size:30px">
+            {{blog.title}}
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+            <p style="font-size:17px">{{blog.summary}}.....<a href="{% url 'detail' blog.id %}"><cite title="Source Title">more</cite></a></p>
+            <footer class="blockquote-footer">{{blog.pub_date}} </footer>
+            </blockquote>
+        </div>
+    </div>
+    <br>
+{%endfor%}
+
+{% endblock %}
