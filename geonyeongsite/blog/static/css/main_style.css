@@ -3,17 +3,18 @@
     margin:0 auto;
 }
 
-.container {
-    width:100%;
-    margin-left:0px;
-    margin-bottom:15px;
+.header {
     border:1px solid rgb(143, 143, 143);
+    margin:10px 0px;
+}
+
+.small_create {
+    display: none;
 }
 
 .side_menu {
-    float: left;
-    width:150px;
-    align-self:center;
+    float:left;
+    width:145px;
     margin-right:10px;
 }
 
@@ -27,14 +28,29 @@
 }
 
 .main_content {
-    float: right;
-    width:85%;
+    float:right;
+    width:83%;
     border:1px solid rgb(143, 143, 143);
     padding:20px;
-    align-self:center;
 }
 
 .home-card {
     border-color: rgb(143, 143, 143);
     margin:10px;
+}
+
+@media screen and (max-width: 992px) {
+    .side_menu {
+        display: none;
+    }
+
+    .main_content {
+        float: none;
+        align-self: center;
+        width:100%;
+    }
+
+    .small_create {
+        display: block;
+    }
 }
