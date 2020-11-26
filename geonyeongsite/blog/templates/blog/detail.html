@@ -13,7 +13,7 @@
         <p style="font-size:17px">{{blog.body}}</p>
         <footer class="blockquote-footer">{{blog.pub_date}} 
             <div class="delete">
-                <p><a href="{% url 'delete' blog.id %}">delete</a></p>
+                <p><a href="{% url 'delete' blog.id %}">Delete</a>  /  <a href="{% url 'edit' blog.id %}">Edit</a></p>
             </div>
         </footer>
         
