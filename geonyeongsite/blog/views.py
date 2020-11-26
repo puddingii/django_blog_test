@@ -13,65 +13,42 @@ def home(request):
     posts = paginator.get_page(page)
     return render(request, 'blog/home.html', {'blogs':blogs, 'posts':posts})
 
+#write post
 def enroll(request):
-    return render(request, 'blog/enroll.html')
-
-def create(request):
-    blog = Blog()
-    blog.title = request.GET['title']
-    blog.body = request.GET['body']
-    blog.pub_date = timezone.datetime.now()
-    blog.save()
-    return redirect('/blog/'+str(blog.id))
-
-def detail(request, blog_id):
-    blog_detail = get_object_or_404(Blog, pk=blog_id)
-    return render(request, 'blog/detail.html', {'blog':blog_detail})
-
-def delete(request, blog_id):
-    blog = Blog.objects.get(id=blog_id)
-    blog.delete()
-    return redirect('/')
-
-def edit(request, blog_id):
-    blog = Blog.objects.get(id=blog_id)
-    site = request.url_root()
-    sp = site.split('/')
-    chk = sp[len(sp)]
-    if int(chk) != blog_id:
-        blog.title = request.GET['title']
-        blog.body = request.GET['body']
-        blog.pub_date = timezone.datetime.now()
-        blog.save()
-        return redirect('/detail/'+str(blog.pk))
-    else:
-        return render(request, 'blog/edit.html', {'blog':blog})
-
-
-def blogpost(request):  
     if request.method=="POST":
         form = BlogPost(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.pub_date = timezone.now()
             post.save()
-            return redirect('home')
+            return redirect('/blog/'+str(post.id))
 
     else:
         form = BlogPost()
-        return render(request, 'blog/new.html', {'form':form})
+        return render(request, 'blog/writing.html', {'form':form, 'title':'enroll'})
 
-'''def result(request):
-full = request.GET['writing']
-words = full.split()
-words_dic = {}
-for word in words:
-    if word in words_dic:
-        words_dic[word] += 1
+#post detail
+def detail(request, blog_id):
+    blog_detail = get_object_or_404(Blog, pk=blog_id)
+    return render(request, 'blog/detail.html', {'blog':blog_detail})
+
+#delete post
+def delete(request, blog_id):
+    blog = Blog.objects.get(id=blog_id)
+    blog.delete()
+    return redirect('/')
+
+#edit post
+def edit(request, blog_id):
+    blog = Blog.objects.get(id=blog_id)
+    if request.method=="POST":
+        form = BlogPost(request.POST, request.FILES)
+        if form.is_valid():
+            blog.title = form.cleaned_data['title']
+            blog.body = form.cleaned_data['body']
+            blog.pub_date = timezone.datetime.now()
+            blog.save()
+            return redirect('/blog/'+str(blog.pk))
     else:
-        words_dic[word] = 1
-return render(request, 'result.html', {'full':full, 'length'
-:len(words), 'dic':words_dic.items()})
-
-def about(request):
-    return render(request, 'about.html')'''
+        form = BlogPost(instance = blog)
+        return render(request, 'blog/writing.html', {'form':form, 'title':'edit'})
