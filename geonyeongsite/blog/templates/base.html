@@ -15,38 +15,67 @@
     <link rel="stylesheet" href="{% static 'css/main_style.css' %}">
 </head>
 <body>
+    <!--haed of blog-->
     <div id="wrap">
         <div class="header">
             <div class="row">
                 <div class="col">
                     <nav class="navbar navbar-expand-lg navbar-light bg-light">
                         <a class="navbar-brand" href="{%url 'home' %}">Geon's BLOG</a>
-                        <a class="small_create" href="{%url 'enroll' %}"><button type="button" class="btn btn-outline-dark">Create</button></a>
+                        <div class="btn-group small_create">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Action
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{%url 'home' %}">Home</a>
+                                <a class="dropdown-item" href="{%url 'enroll' %}">Writing</a>
+                                {% if user.is_authenticated %}
+                                <a class="dropdown-item" href="{%url 'logout' %}">Logout</a>
+                                {% else %}
+                                <a class="dropdown-item" href="{%url 'login' %}">Login</a>
+                                {% endif %}
+                                <a class="dropdown-item" href="{%url 'signup' %}">Account</a>
+                            </div>
+                        </div>
+                        <!--
+                        <a class="small_create" href="{%url 'enroll' %}"><button type="button" class="btn btn-outline-dark">Create</button></a>-->
                     </nav>
                 </div>
                 
             </div>
         </div>
 
+        <!--manage account & many function-->
         <div class="side_menu">
             <div class="card left_card">
                 <div class="card-body">
                     <h5 class="card-title">BLOG</h5>
                     <h6 class="card-subtitle mb-2 text-muted">project</h6>
-                    <p class="card-text left-card-text">Baek Geon Yeong</p>
+                    <p class="card-text left-card-text">
+                        {% if user.is_authenticated %}<b>{{user.username}}</b><br>is activating
+                        {% else %}No account
+                        {% endif %}
+                    </p>
                     <div class="btn-group">
                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Action
                         </button>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{%url 'home' %}">Home</a>
-                            <a class="dropdown-item" href="{%url 'enroll' %}">Create</a>
+                            <a class="dropdown-item" href="{%url 'enroll' %}">Writing</a>
+                            {% if user.is_authenticated %}
+                            <a class="dropdown-item" href="{%url 'logout' %}">Logout</a>
+                            {% else %}
+                            <a class="dropdown-item" href="{%url 'login' %}">Login</a>
+                            {% endif %}
+                            <a class="dropdown-item" href="{%url 'signup' %}">Account</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!--main content of blog-->
         <div class="main_content">
             {% block content %}{% endblock %}
         </div>

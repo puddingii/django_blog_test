@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 from .models import Blog
 from .form import BlogPost
 
@@ -14,6 +15,7 @@ def home(request):
     return render(request, 'blog/home.html', {'blogs':blogs, 'posts':posts})
 
 #write post
+@login_required
 def enroll(request):
     if request.method=="POST":
         form = BlogPost(request.POST)
