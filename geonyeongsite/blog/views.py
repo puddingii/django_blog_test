@@ -17,17 +17,22 @@ def home(request):
 #write post
 @login_required
 def enroll(request):
-    if request.method=="POST":
-        form = BlogPost(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.pub_date = timezone.now()
-            post.save()
-            return redirect('/blog/'+str(post.id))
+    user_id = request.user.id
 
+    #if login id is admin, you can write
+    if user_id==1:
+        if request.method=="POST":
+            form = BlogPost(request.POST)
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.pub_date = timezone.now()
+                post.save()
+                return redirect('/blog/'+str(post.id))
+        else:
+            form = BlogPost()
+            return render(request, 'blog/writing.html', {'form':form, 'title':'enroll'})
     else:
-        form = BlogPost()
-        return render(request, 'blog/writing.html', {'form':form, 'title':'enroll'})
+        return redirect('/')
 
 #post detail
 def detail(request, blog_id):
@@ -35,22 +40,35 @@ def detail(request, blog_id):
     return render(request, 'blog/detail.html', {'blog':blog_detail})
 
 #delete post
+@login_required
 def delete(request, blog_id):
-    blog = Blog.objects.get(id=blog_id)
-    blog.delete()
-    return redirect('/')
+    user_id = request.user.id
+
+    if user_id==1:
+        blog = Blog.objects.get(id=blog_id)
+        blog.delete()
+        return redirect('/')
+    else:
+        return redirect('/blog/'+str(blog_id))
 
 #edit post
+@login_required
 def edit(request, blog_id):
     blog = Blog.objects.get(id=blog_id)
-    if request.method=="POST":
-        form = BlogPost(request.POST, request.FILES)
-        if form.is_valid():
-            blog.title = form.cleaned_data['title']
-            blog.body = form.cleaned_data['body']
-            blog.pub_date = timezone.datetime.now()
-            blog.save()
-            return redirect('/blog/'+str(blog.pk))
+    user_id = request.user.id
+
+    #if login id is admin, you can write
+    if user_id==1:
+        if request.method=="POST":
+            form = BlogPost(request.POST, request.FILES)
+            if form.is_valid():
+                blog.title = form.cleaned_data['title']
+                blog.body = form.cleaned_data['body']
+                blog.pub_date = timezone.datetime.now()
+                blog.save()
+                return redirect('/blog/'+str(blog.pk))
+        else:
+            form = BlogPost(instance = blog)
+            return render(request, 'blog/writing.html', {'form':form, 'title':'edit'})
     else:
-        form = BlogPost(instance = blog)
-        return render(request, 'blog/writing.html', {'form':form, 'title':'edit'})
+        return redirect('/blog/'+str(blog_id))
