@@ -5,3 +5,8 @@ class BlogPost(forms.ModelForm):
     class Meta:
         model = Blog
         fields = ['title', 'body']
+
+        labels = {
+            'title': 'Title',
+            'body': 'Body',
+        }

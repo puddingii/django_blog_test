@@ -73,7 +73,20 @@
                     </div>
                 </div>
             </div>
+            <!--수정해야함 상태메시지 나타내는곳-->
+            {% if user.is_authenticated %}
+            <div class="card left_card">
+                <div class="card-body">
+                    <h5 class="card-title">State</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">project</h6>
+                    <p class="card-text left-card-text">
+                        nothing
+                    </p>
+                </div>
+            </div>
+            {% endif %}
         </div>
+
 
         <!--main content of blog-->
         <div class="main_content">

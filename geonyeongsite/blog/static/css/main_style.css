@@ -28,8 +28,8 @@
 }
 
 .main_content {
-    float:right;
-    width:83%;
+    float: right;
+    width: calc(100% - 160px);
     border:1px solid rgb(143, 143, 143);
     padding:20px;
 }

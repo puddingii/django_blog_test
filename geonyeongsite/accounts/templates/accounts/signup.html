@@ -3,23 +3,15 @@
 {% block title %}SignUp{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Sign up</h1>
-    <form method="POST" action="{%url 'signup'%}">
-        {% csrf_token %}
-        Username:
-        <br>
-        <input name="username" type="text">
-        <br>
-        Password:
-        <br>
-        <input name="password1" type="password">
-        <br>
-        Confirm Password:
-        <br>
-        <input name="password2" type="password">
-        <br><br>
-        <input type="submit" class="btn btn-primary" value="sign up">
-    </form>
-</div>
+
+<h2>Sign up</h2>
+<form method="POST" action="{%url 'signup'%}">
+    {% csrf_token %}
+    <table>
+        {{form.as_table}}
+    </table>
+    <br>
+    <input type="submit" class="btn btn-secondary" value="sign up">
+</form>
+
 {% endblock %}
